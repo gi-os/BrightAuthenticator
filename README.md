@@ -75,7 +75,7 @@ build in the wild today — community tools are meant to be built and signed by 
 from a public git commit, and the SDK's own README says as much — so this keeps the
 example's logic (base32 decoder, RFC 6238 generator, `otpauth://` parser, AndroidKeyStore
 cipher, Room schema) and replaces the `LightScreen` chrome with Compose/Material3 in the
-same monochrome idiom as the rest of the [gi-os Light App collection](#the-gi-os-light-app-collection).
+same monochrome idiom as the rest of the [Bright* collection](https://brightmarket.gzl.dev).
 A plain APK installs over `adb` now and updates through Obtainium later.
 
 One deliberate behavioural change over the SDK original: **removing an account asks
