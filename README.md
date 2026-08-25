@@ -12,7 +12,7 @@ TOTP two-factor authenticator for the **Light Phone III**. Shows up on the phone
 Scan the code above with **BrightMarket** installed to open BrightAuthenticator there and
 install or update it directly. Don't have BrightMarket yet? Get it, and browse
 every Bright app, at
-**[gi-os.github.io/brightmarket-index/browse.html](https://gi-os.github.io/brightmarket-index/browse.html)**.
+**[brightmarket.gzl.dev](https://brightmarket.gzl.dev)**.
 
 **Current version: v1.2.x.** See [Version history](#version-history).
 
@@ -347,27 +347,25 @@ that job instead.
   error dialog gets an explicit dark-grey fill — a scrim over black tints nothing.
 - Text uses Akkurat when LightOS provides it, so the app matches the system UI.
 
-## The gi-os Light App collection
-
-Tools for the Light Phone III, all open source.
-
-| Tool | What it does | Built on |
-| --- | --- | --- |
-| **BrightAuthenticator** (this repo) | TOTP two-factor codes, with a confirm step before a delete | Plain Android, ports the light-sdk example |
-| [BrightPasses](https://github.com/gi-os/BrightPasses) | Photograph a movie ticket, keep the stub | Plain Android |
-| [BrightTip](https://github.com/gi-os/BrightTip) | Tip calculator, plus a receipt splitter that reads the line items | Plain Android |
-| [BrightNoise](https://github.com/gi-os/BrightNoise) | Twelve synthesized sounds, a two-layer mixer and a sleep timer | Plain Android |
-| [LightPods](https://github.com/gi-os/LightPods) | AirPods battery, in-ear and lid status | Plain Android |
-| [LightQR](https://github.com/gi-os/LightQR) | QR scanner, plus a browser generator | Plain Android |
-| [BrightNews](https://github.com/gi-os/BrightNews) | RSS and Atom reader with images and QR subscribe | light-sdk fork |
-| [BrightControl](https://github.com/gi-os/BrightControl) | The wheel and camera button, working phone-wide | Plain Android |
-| [LightGlance](https://github.com/gi-os/LightGlance) | Ambient notification dots | Plain Android |
-| [BrightChat](https://github.com/gi-os/BrightChat) | iMessage over a self-hosted BlueBubbles server | Fork of [craigeley/chat](https://github.com/craigeley/chat) |
-| [BrightTransit](https://github.com/gi-os/BrightTransit) | Live MTA subway arrivals | light-sdk fork |
-| [LightBooks](https://github.com/gi-os/BrightLibrary) | RSVP speed reader for EPUB and MOBI | Fork of [fluffyspace/FastRead](https://github.com/fluffyspace/FastRead) |
-
-The Light Phone does not sponsor or endorse any of these. Licences vary per repo.
 
 ## Licence
 
 MIT.
+
+<!-- bright-footer:begin -->
+---
+
+## Bright\*
+
+*TOTP codes in a PIN-wrapped vault, on a phone with no authenticator app and no Play Services to run one.*
+
+26 open-source apps for the **Light Phone III** — camera, music, maps, messages,
+reading, transit, games. The phone has no app store, so they install by sideload: scan one
+code from **[brightmarket.gzl.dev](https://brightmarket.gzl.dev)** and BrightMarket keeps them updated.
+
+[Roll](https://github.com/gi-os/Roll) · [BrightMusic](https://github.com/gi-os/BrightMusic) · [BrightWay](https://github.com/gi-os/BrightWay) · [BrightChat](https://github.com/gi-os/BrightChat) · [BrightControl](https://github.com/gi-os/BrightControl) · [BrightRemote](https://github.com/gi-os/BrightRemote) · [browse all 26 →](https://brightmarket.gzl.dev)
+
+The Light Phone does not sponsor or endorse any of these. Built by
+[Giovanni Lupo](https://github.com/gi-os) — if this one is useful to you, a ⭐ helps the next
+person find it.
+<!-- bright-footer:end -->
