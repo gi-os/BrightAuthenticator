@@ -1,3 +1,5 @@
+<img src="docs/icon.png" alt="" width="72" align="left" />
+
 # BrightAuthenticator
 
 TOTP two-factor authenticator for the **Light Phone III**. Shows up on the phone as
