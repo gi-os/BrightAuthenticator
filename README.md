@@ -239,6 +239,14 @@ after a pause is held until a second confirms it — the wheel sits under a thum
 stray brush shouldn't move the code you're reading. Only the turns are handled here; the
 wheel click and camera button do nothing in BrightAuthenticator.
 
+### A code for another app
+
+Web Tools (the browser) can ask this app for one code from a sign-in page: it starts
+`com.gios.lightauth.PICK_CODE` for a result with the site's host in `site`. The PIN, if set,
+is asked here first. Accounts whose issuer or label mention the site come first; tap one and
+the six digits go back once, as `code`, with the account's name. No secret leaves, and nothing
+is readable without a tap on this screen. CANCEL returns nothing.
+
 ### Optional: BrightControl
 
 [BrightControl](https://github.com/gi-os/BrightControl) is a separate, optional app that

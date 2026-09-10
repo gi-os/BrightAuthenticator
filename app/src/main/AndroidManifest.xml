@@ -32,6 +32,22 @@
         </activity>
 
         <!--
+          One code for another app. Web Tools starts this for a result from a sign-in page; the
+          PIN (if set) is asked here, a row is tapped, and the six digits go back once. Exported
+          because that is the whole point; nothing is readable without a tap on this screen.
+        -->
+        <activity
+            android:name=".PickCodeActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.LightAuth">
+            <intent-filter>
+                <action android:name="com.gios.lightauth.PICK_CODE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!--
           LightSync's hook. Exported with no permission attribute on purpose: the provider
           rejects any caller that is not LightSync by package *and* signing certificate, which
           is a check no manifest attribute can express between apps signed with different keys.
