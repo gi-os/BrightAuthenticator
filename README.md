@@ -2,6 +2,8 @@
 
 # BrightAuthenticator
 
+[**⬇ Download the latest APK**](https://github.com/gi-os/BrightAuthenticator/releases/latest) · free, open source.
+
 TOTP two-factor authenticator for the **Light Phone III**. Shows up on the phone as
 **Authenticator** (`com.gios.lightauth`).
 
