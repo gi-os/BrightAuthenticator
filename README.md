@@ -315,20 +315,74 @@ The launcher icon is generated, not hand-drawn — geometry lives in
 Edit it there and re-run `python3 scripts/generate_icon.py`; the script asserts the mark
 stays inside the adaptive safe zone.
 
-## Contributing
+## Build and release signing
 
-Solo repo, no PR workflow: commits go straight to `main`, and every push to `main`
-triggers CI, which builds, signs, and publishes a GitHub Release. **A push is a release,
-not a cosmetic action** — verify before pushing, not after.
+`./gradlew :app:assembleRelease` builds an unsigned APK. Debug builds use the standard
+Android debug key, which varies across CI runners. Use a local build for repeat debug
+installs; a debug APK cannot update a production install. The **Check** workflow tests
+signing with disposable keys and never publishes.
 
-The keystore is committed at `keystore/lightauth.jks` (alias/passwords all `lightauth`),
-so every build carries the same signing certificate and upgrades install over the top.
-CI pins that certificate's SHA-256 in `signing-fingerprint.txt` and fails the build if it
-ever drifts, because a changed cert surfaces in Obtainium only as an opaque
-`Failure: Invalid`. Exactly one APK is attached per release; the debug build stays a
-workflow artifact only. `versionCode` is the workflow run number; `versionName` in the
-committed `build.gradle.kts` (currently `1.2.0`) is only the `major.minor` base — CI
-stamps the released `major.minor.RUN` (e.g. `1.0.4`) at build time and tags it `vX.Y.Z`.
+Before merging this change, disable [Build & Release APK](https://github.com/gi-os/BrightAuthenticator/actions/workflows/build.yml).
+A push to `main` otherwise publishes. Keep it disabled until the rotation and distribution
+checks below are done and you intend to publish.
+
+In a private directory outside the checkout, use Android Build Tools 35.0.0. Use the
+original `keystore/lightauth.jks` from a checkout before this change and its existing
+passwords only for the offline rotation step. Use fresh passwords for the new key.
+
+```sh
+umask 077
+keytool -genkeypair -storetype JKS -keystore lightauth-new.jks -alias lightauth-release \
+  -keyalg RSA -keysize 3072 -validity 10000
+
+apksigner rotate --out lightauth.lineage \
+  --old-signer --ks /path/to/original/lightauth.jks --ks-key-alias lightauth \
+  --set-installed-data true --set-rollback false \
+  --new-signer --ks lightauth-new.jks --ks-key-alias lightauth-release
+
+apksigner lineage --in lightauth.lineage --print-certs
+```
+
+Verify signer #1's SHA-256 digest against `signing-lineage-root-fingerprint.txt` and
+replace `signing-fingerprint.txt` in this PR with signer #2's SHA-256 digest. Do not
+change the original pin. The release won't publish while the pins are still identical.
+
+In [BrightAuthenticator's environment settings](https://github.com/gi-os/BrightAuthenticator/settings/environments),
+create an environment named `release`. Under **Deployment branches and tags**, choose
+**Selected branches and tags** and add a single **Branch** rule for `main`, with no tag
+rules. Add the five secrets below to that environment only. Do not use repository-wide
+secrets or upload the original key or its passwords.
+
+| Secret | Value |
+| --- | --- |
+| `RELEASE_KEYSTORE_BASE64` | Base64-encoded `lightauth-new.jks` |
+| `SIGNING_LINEAGE_BASE64` | Base64-encoded `lightauth.lineage` |
+| `KEYSTORE_PASSWORD` | New keystore password |
+| `KEY_ALIAS` | `lightauth-release` |
+| `KEY_PASSWORD` | New key password |
+
+On Linux, stream the files and enter the passwords at the prompts:
+
+```sh
+base64 -w 0 lightauth-new.jks | gh secret set RELEASE_KEYSTORE_BASE64 --env release --repo gi-os/BrightAuthenticator
+base64 -w 0 lightauth.lineage | gh secret set SIGNING_LINEAGE_BASE64 --env release --repo gi-os/BrightAuthenticator
+gh secret set KEYSTORE_PASSWORD --env release --repo gi-os/BrightAuthenticator
+gh secret set KEY_ALIAS --env release --repo gi-os/BrightAuthenticator --body lightauth-release
+gh secret set KEY_PASSWORD --env release --repo gi-os/BrightAuthenticator
+```
+
+CI supplies only the new private key to `scripts/sign-release.sh` and checks that the APK's
+v3 lineage links both pins, preserves installed data, and disallows signer rollback. API 29+
+does not need v1/v2 signatures. Removing the old key from the branch does not remove it
+from Git history or protect installs that still trust it.
+
+Before re-enabling publishing, verify an in-place update from the last shipped build to a
+locally signed test APK with a greater `versionCode` on a device with no real authenticator data.
+Coordinate the BrightMarket migration: add the exact old-to-new `com.gios.lightauth`
+handover to [the index](https://github.com/gi-os/brightmarket-index/blob/HEAD/scripts/build_index.py)
+and ensure [the updater](https://github.com/gi-os/BrightMarket) accepts the installed
+predecessor for this transition. The index otherwise keeps the old release, and changing
+the catalog pin alone makes the current updater classify old installs as foreign.
 
 ## Version history
 

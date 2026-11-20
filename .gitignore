@@ -8,6 +8,8 @@
 /captures
 .externalNativeBuild
 .cxx
+*.jks
+*.keystore
 
 # Pillow leaves this behind when the icon script runs
 __pycache__/
